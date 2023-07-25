@@ -17,6 +17,7 @@
     <description>ngac-parent</description>
     <modules>
         <module>ngac-core</module>
+        <module>ngac-gateway</module>
     </modules>
 
     <properties>
