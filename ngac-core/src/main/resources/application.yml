@@ -1,8 +1,14 @@
 spring:
+  application:
+    name: ngac-core
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
   neo4j:
     uri: neo4j://localhost:7687
     authentication:
       username: neo4j
       password: fJxx2m#@DbWwMW
 server:
-  port: ${port:8080}
+  port: 8080

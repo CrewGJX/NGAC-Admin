@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: ngac-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    gateway:
+      routes:
+        - id: ngac路由
+          uri: lb://ngac-core
+          predicates:
+            - Path=/ngac/**
+          filters:
+            - StripPrefix=1
+
+server:
+  port: 8081
