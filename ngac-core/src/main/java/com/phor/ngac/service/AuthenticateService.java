@@ -1,7 +1,9 @@
 package com.phor.ngac.service;
 
-public interface AuthenticateService {
-    boolean visitResource(String name, String resource, String action);
+import com.phor.ngac.neo4j.entity.node.u.User;
 
-    String findUser(String name);
+public interface AuthenticateService {
+    boolean visitMenu(String name, String resource, String action);
+
+    User findUser(String name);
 }
