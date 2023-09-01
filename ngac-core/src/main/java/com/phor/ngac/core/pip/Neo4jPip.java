@@ -6,6 +6,8 @@ import com.phor.ngac.entity.po.node.u.User;
 import com.phor.ngac.exception.PolicyClassException;
 import com.phor.ngac.mapper.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Value;
@@ -70,6 +72,12 @@ public class Neo4jPip extends CypherRunner implements PolicyInformationPoint {
         Map<String, AccessRight> policyArMap = allAr.stream()
                 .collect(Collectors.groupingBy(
                         AccessRight::getPolicy, Collectors.reducing(AccessRight.emptyAccess(), this::union)));
+
+        // 无权限，直接返回
+        if (MapUtils.isEmpty(policyArMap) || policyArMap.values().stream()
+                .noneMatch(value -> CollectionUtils.isNotEmpty(value.getCommonAccessList()))) {
+            return Lists.newArrayList(AccessRight.emptyAccess());
+        }
 
         // 不同pc间取交集
         AccessRight accessRight = policyArMap.values().stream()

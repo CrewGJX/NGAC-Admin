@@ -141,7 +141,7 @@ public class Neo4jPap implements PolicyAdministrationPoint {
 
             // 没有节点存在，返回空权限集合
             if (Objects.isNull(node) || Objects.isNull(resource)) {
-                log.error("获取权限集合失败，节点不存在，node: {}, resource: {}, nodeEnum: {}, object: {}",
+                log.error("获取权限集合失败，节点不存在，node: {}, resource: {}, operateNodeEnum: {}, object: {}",
                         node, resource, nodeEnum, object);
                 throw new NodeNotFountException();
             }
@@ -189,7 +189,8 @@ public class Neo4jPap implements PolicyAdministrationPoint {
 
     public Result simpleRunCypher(String cypher) {
         Result result = pip.driverRunCypherWithoutTx(cypher);
-        log.info("cypher result: {}", result);
+        // debug日志记录result内部元素
+        log.debug("cypher result: {}", result.keys());
         return result;
     }
 
@@ -198,6 +199,6 @@ public class Neo4jPap implements PolicyAdministrationPoint {
                 .driverRunCypherWithTx(cypher)
                 .commit()
                 .result();
-        log.info("cypher result: {}", result);
+        log.debug("cypher result: {}", result.keys());
     }
 }

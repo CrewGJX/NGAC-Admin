@@ -1,12 +1,10 @@
 package com.phor.ngac.entity.vo.requests;
 
-import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 
 @Data
-@Builder
 public class UserMenuAuthRequestVo {
     @NotEmpty(message = "用户名不能为空")
     private String name;

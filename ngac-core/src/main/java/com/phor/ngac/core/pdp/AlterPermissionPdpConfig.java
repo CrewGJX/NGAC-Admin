@@ -7,7 +7,6 @@ import com.phor.ngac.core.pap.PolicyAdministrationPoint;
 import com.phor.ngac.entity.dto.AccessRight;
 import com.phor.ngac.utils.Neo4jOptUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,7 +29,7 @@ public class AlterPermissionPdpConfig extends BasePdp {
 
     @Override
     public Decision makeDecision(String subject, NodeEnum nodeEnum, String action) {
-        String object = nodeEnum.getLabel().stream().findFirst().orElse(StringUtils.EMPTY);
+        String object = nodeEnum.getName();
         // 获取用户对admin resource的权限集合
         AccessRight accessRights = neo4jPap.getAccessRights(subject, object, nodeEnum);
         // 获取用户对admin resource的禁止集合

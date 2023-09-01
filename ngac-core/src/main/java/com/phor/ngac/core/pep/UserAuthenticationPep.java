@@ -27,6 +27,14 @@ public class UserAuthenticationPep implements PolicyEnforcementPoint {
     @Resource
     private PolicyDecisionPoint alterPermissionPdp;
 
+    /**
+     * 菜单类型的访问控制
+     *
+     * @param user   用户
+     * @param menu   菜单
+     * @param action 操作类型，默认访问时为read
+     * @return 是否允许访问
+     */
     @Override
     public boolean enforcePolicy(String user, String menu, String action) {
         // pdp进行决策
@@ -37,6 +45,14 @@ public class UserAuthenticationPep implements PolicyEnforcementPoint {
         return decision == Decision.ALLOW;
     }
 
+    /**
+     * 管理性资源的访问控制
+     *
+     * @param subject  访问主体
+     * @param nodeEnum 资源类型
+     * @param action   操作类型
+     * @return 是否允许访问
+     */
     @Override
     public boolean enforcePolicy(String subject, NodeEnum nodeEnum, String action) {
         Decision decision = alterPermissionPdp.makeDecision(subject, nodeEnum, action);

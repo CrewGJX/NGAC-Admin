@@ -55,8 +55,7 @@ public class FreemarkerUtils {
             Template template = configuration.getTemplate(path);
             return FreeMarkerTemplateUtils.processTemplateIntoString(template, params);
         } catch (Exception e) {
-            log.error("获取模板内容失败", e);
-            throw new FreeMarkerException("获取模板内容失败", e);
+            throw new FreeMarkerException("获取模板内容失败，详细错位信息可见freemarker.runtime");
         }
     }
 }

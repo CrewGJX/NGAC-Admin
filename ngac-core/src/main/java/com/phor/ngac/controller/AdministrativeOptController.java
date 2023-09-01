@@ -1,8 +1,9 @@
 package com.phor.ngac.controller;
 
 import com.phor.ngac.entity.dto.UserPermission;
-import com.phor.ngac.entity.vo.requests.admin.RoleAdminOpt;
-import com.phor.ngac.entity.vo.requests.admin.UserAdminOpt;
+import com.phor.ngac.entity.vo.requests.admin.node.RoleAdminOpt;
+import com.phor.ngac.entity.vo.requests.admin.node.UserAdminOpt;
+import com.phor.ngac.entity.vo.requests.admin.relation.AccessRelationAdminOpt;
 import com.phor.ngac.entity.vo.responses.CommonResponse;
 import com.phor.ngac.service.AdministrativeOptService;
 import io.swagger.annotations.Api;
@@ -27,18 +28,18 @@ public class AdministrativeOptController {
     @PostMapping("addUser")
     @ApiOperation(value = "添加用户", notes = "添加用户")
     @ApiImplicitParam(name = "loginUserName", value = "登录用户名", required = true, dataType = "String", paramType = "query")
-    public CommonResponse<String> addUser(@RequestParam String loginUserName,
+    public CommonResponse<Boolean> addUser(@RequestParam String loginUserName,
                                           @RequestBody UserAdminOpt userAdminOptRequestVo) {
-        adminService.addUser(loginUserName, userAdminOptRequestVo);
-        return CommonResponse.success("添加用户成功");
+        boolean isSuccess = adminService.addUser(loginUserName, userAdminOptRequestVo);
+        return CommonResponse.response(isSuccess);
     }
 
     @PostMapping("addRole")
     @ApiOperation(value = "添加角色", notes = "添加角色")
-    public String addRole(@RequestParam String loginUserName,
+    public CommonResponse<Boolean> addRole(@RequestParam String loginUserName,
                           @RequestBody RoleAdminOpt roleAdminOptRequestVo) {
-        adminService.addRole(loginUserName, roleAdminOptRequestVo);
-        return null;
+        boolean isSuccess = adminService.addRole(loginUserName, roleAdminOptRequestVo);
+        return CommonResponse.response(isSuccess);
     }
 
     @PostMapping("addPolicyClass")
@@ -49,8 +50,8 @@ public class AdministrativeOptController {
 
     @PostMapping("addPermission")
     @ApiOperation(value = "增加权限", notes = "增加权限")
-    public String addPermission() {
-        return null;
+    public String addAccess(@RequestBody AccessRelationAdminOpt accessRelationAdminOpt) {
+        return adminService.addPermission(null, null, null, null);
     }
 
     @GetMapping("findUserAndPermissions/{user}")

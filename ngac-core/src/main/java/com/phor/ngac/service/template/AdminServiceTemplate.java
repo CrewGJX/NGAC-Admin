@@ -16,7 +16,10 @@ import lombok.extern.slf4j.Slf4j;
 @SuppressWarnings("rawtypes")
 public class AdminServiceTemplate<T extends AdminOpt> {
     protected Class<? extends BaseEvent> eventClass;
-    protected CommonAccess.MetaAccess operateEnum;
+    // 操作类型枚举类型
+    protected CommonAccess.MetaAccess operateTypeEnum;
+    // 校验节点类型，如user类节点的操作，需要校验userNode节点的权限
+    protected NodeEnum authNodeEnum;
     protected T baseAdminVo;
 
     public NodeAdminServiceTemplate<T> node() {
@@ -27,35 +30,47 @@ public class AdminServiceTemplate<T extends AdminOpt> {
         return new RelationAdminServiceTemplate<>();
     }
 
-    public Enum getFindEnum() {
-        return null;
+    public Enum getOperateNodeEnum() {
+        throw new UnsupportedOperationException("父类不支持此操作，请使用子类");
+    }
+
+    public Enum getAuthNodeEnum() {
+        return authNodeEnum;
     }
 
     @Data
     @SuppressWarnings("unused")
     public static class NodeAdminServiceTemplate<T extends AdminOpt> extends AdminServiceTemplate<T> {
-        private NodeEnum nodeEnum;
+        // 实际最后操作的节点类型
+        private NodeEnum operateNodeEnum;
 
         public NodeAdminServiceTemplate<T> add() {
             this.eventClass = AddNodeEvent.class;
-            this.operateEnum = CommonAccess.MetaAccess.CREATE;
+            this.operateTypeEnum = CommonAccess.MetaAccess.CREATE;
             return this;
         }
 
         public NodeAdminServiceTemplate<T> delete() {
             this.eventClass = DeleteNodeEvent.class;
-            this.operateEnum = CommonAccess.MetaAccess.DELETE;
+            this.operateTypeEnum = CommonAccess.MetaAccess.DELETE;
             return this;
         }
 
         public NodeAdminServiceTemplate<T> user() {
-            this.nodeEnum = NodeEnum.USER;
+            this.operateNodeEnum = NodeEnum.USER;
+            super.authNodeEnum = NodeEnum.USER_NODE;
+            return this;
+        }
+
+        public NodeAdminServiceTemplate<T> role() {
+            this.operateNodeEnum = NodeEnum.ROLE;
+            super.authNodeEnum = NodeEnum.ROLE_NODE;
             return this;
         }
 
         @Override
-        public Enum getFindEnum() {
-            return this.nodeEnum;
+        public NodeEnum getOperateNodeEnum() {
+            return this.operateNodeEnum;
         }
 
         public NodeAdminServiceTemplate<T> data(T baseAdminVo) {

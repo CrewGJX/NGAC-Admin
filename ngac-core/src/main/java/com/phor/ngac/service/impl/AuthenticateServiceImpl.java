@@ -1,6 +1,5 @@
 package com.phor.ngac.service.impl;
 
-import com.google.common.collect.Lists;
 import com.phor.ngac.consts.CommonAccess;
 import com.phor.ngac.consts.NodeEnum;
 import com.phor.ngac.core.pep.PolicyEnforcementPoint;
@@ -27,7 +26,7 @@ public class AuthenticateServiceImpl implements AuthenticateService {
     @Override
     public boolean alterPermission(AlterPermissionRequestVo alterPermissionRequestVo) {
         return pep.enforcePolicy(alterPermissionRequestVo.getLoginUserName(),
-                NodeEnum.getByLabel(Lists.newArrayList(alterPermissionRequestVo.getPermissionName())),
+                NodeEnum.getByName(alterPermissionRequestVo.getPermissionName()),
                 CommonAccess.getMetaAccess(alterPermissionRequestVo.getPermissionType()).getType());
     }
 }

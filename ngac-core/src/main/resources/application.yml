@@ -13,5 +13,7 @@ spring:
 ngac:
   eventbus:
     async: true
+test-api:
+  enable: true
 server:
   port: 8080

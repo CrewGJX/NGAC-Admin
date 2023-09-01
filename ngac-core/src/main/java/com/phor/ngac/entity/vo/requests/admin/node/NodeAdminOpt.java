@@ -1,5 +1,6 @@
-package com.phor.ngac.entity.vo.requests.admin;
+package com.phor.ngac.entity.vo.requests.admin.node;
 
+import com.phor.ngac.entity.vo.requests.admin.AdminOpt;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

@@ -1,6 +1,5 @@
 package com.phor.ngac.controller;
 
-import cn.hutool.core.map.MapUtil;
 import com.phor.ngac.consts.NodeEnum;
 import com.phor.ngac.consts.RelationEnum;
 import com.phor.ngac.core.epp.EventFactory;
@@ -13,20 +12,29 @@ import com.phor.ngac.core.pap.PolicyAdministrationPoint;
 import com.phor.ngac.entity.po.node.BaseNode;
 import com.phor.ngac.entity.po.node.CommonNode;
 import com.phor.ngac.entity.po.relation.BaseRelation;
-import com.phor.ngac.entity.po.relation.CommonRelation;
 import com.phor.ngac.entity.vo.requests.NodeOptVo;
+import com.phor.ngac.entity.vo.requests.RelationOptVo;
 import com.phor.ngac.entity.vo.responses.CommonResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
+/**
+ * 仅作为功能性验证，后续删除
+ *
+ * @author Phor
+ * @version 0.1
+ * @since 0.1
+ */
 @Slf4j
 @RestController
 @ConditionalOnBean(EventPublisher.class)
+@ConditionalOnProperty(prefix = "test-api", name = "enable", havingValue = "true")
 @RequestMapping("/test")
 @Api(tags = "测试接口")
 @Deprecated
@@ -76,42 +84,33 @@ public class TestController {
 
     @PostMapping("/rel/add")
     @ApiOperation("添加关系")
-    public CommonResponse<String> addRel() {
+    public CommonResponse<String> addRel(@RequestBody RelationOptVo relationOptVo) {
         AddRelationEvent addRelationEvent = new AddRelationEvent();
-        CommonNode source = new CommonNode();
-        source.setLabels(NodeEnum.USER.getLabel());
-        source.setName("testUser");
+        CommonNode source = relationOptVo.getSource();
         addRelationEvent.setSource(source);
 
-        CommonNode target = new CommonNode();
-        target.setLabels(NodeEnum.USER_GROUP.getLabel());
-        target.setName("用户组1:专网1");
+        CommonNode target = relationOptVo.getTarget();
         addRelationEvent.setTarget(target);
 
-        addRelationEvent.setRelationLabel(RelationEnum.ASSIGN.getType());
-        addRelationEvent.setPropertyMap(MapUtil.of("name", "testAssign"));
+        addRelationEvent.setRelationLabel(relationOptVo.getCommonRelation().getType());
+        addRelationEvent.setPropertyMap(relationOptVo.getCommonRelation().getPropertyMap());
+
         eventPublisher.publish(addRelationEvent);
         return CommonResponse.success("addRel");
     }
 
     @PostMapping("/rel/del")
     @ApiOperation("删除关系")
-    public CommonResponse<String> delRel() {
+    public CommonResponse<String> delRel(@RequestBody RelationOptVo relationOptVo) {
         DelRelationEvent delRelationEvent = new DelRelationEvent();
-        CommonNode source = new CommonNode();
-        source.setLabels(NodeEnum.RESOURCE_GROUP.getLabel());
-        source.setName("专网");
+        CommonNode source = relationOptVo.getSource();
         delRelationEvent.setSource(source);
 
-        CommonNode target = new CommonNode();
-        target.setLabels(NodeEnum.RESOURCE_GROUP.getLabel());
-        target.setName("普通角色");
+        CommonNode target = relationOptVo.getTarget();
         delRelationEvent.setTarget(target);
 
-        CommonRelation commonRelation = new CommonRelation();
-        commonRelation.setType(RelationEnum.INHERIT.getType());
+        delRelationEvent.setRelation(relationOptVo.getCommonRelation());
 
-        delRelationEvent.setRelation(commonRelation);
         eventPublisher.publish(delRelationEvent);
         return CommonResponse.success("delRel");
     }
