@@ -1,0 +1,7 @@
+FROM openjdk:8u201-jre-alpine3.9
+
+COPY ngac-gateway.jar /opt/ngac-gateway.jar
+WORKDIR /opt
+
+ENTRYPOINT ["java", "-jar", "ngac-gateway.jar", "--spring.profiles.active=docker"]
+EXPOSE 8081

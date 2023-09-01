@@ -1,0 +1,1 @@
+match path = (:user {name: $user})-[:prohibition]->(:o {name: $object}) return path

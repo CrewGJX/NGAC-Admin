@@ -1,9 +1,10 @@
 package com.phor.ngac.service;
 
-import com.phor.ngac.neo4j.entity.node.u.User;
+import com.phor.ngac.entity.vo.requests.AlterPermissionRequestVo;
+import com.phor.ngac.entity.vo.requests.UserMenuAuthRequestVo;
 
 public interface AuthenticateService {
-    boolean visitMenu(String name, String resource, String action);
+    boolean visitMenu(UserMenuAuthRequestVo userMenuAuthRequestVo);
 
-    User findUser(String name);
+    boolean alterPermission(AlterPermissionRequestVo alterPermissionRequestVo);
 }

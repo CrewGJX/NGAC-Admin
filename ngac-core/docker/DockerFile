@@ -1,0 +1,7 @@
+FROM openjdk:8u201-jre-alpine3.9
+
+COPY ngac-core.jar /opt/ngac-core.jar
+WORKDIR /opt
+
+ENTRYPOINT ["java", "-jar", "ngac-core.jar", "--spring.profiles.active=docker"]
+EXPOSE 8080

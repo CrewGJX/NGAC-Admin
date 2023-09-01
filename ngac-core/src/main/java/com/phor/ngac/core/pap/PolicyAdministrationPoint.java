@@ -1,18 +1,35 @@
 package com.phor.ngac.core.pap;
 
-import com.phor.ngac.consts.AccessRight;
-import com.phor.ngac.consts.PolicyClassEnum;
-import com.phor.ngac.neo4j.entity.node.u.User;
-import org.neo4j.driver.types.Node;
+import com.phor.ngac.consts.NodeEnum;
+import com.phor.ngac.consts.RelationEnum;
+import com.phor.ngac.entity.dto.AccessRight;
+import com.phor.ngac.entity.dto.UserPermission;
+import com.phor.ngac.entity.po.node.BaseNode;
+import com.phor.ngac.entity.po.node.CommonNode;
+import com.phor.ngac.entity.po.relation.BaseRelation;
 
-import java.util.List;
+public interface PolicyAdministrationPoint extends NodeOpt, RelationOpt {
+    UserPermission findUserAndPermissions(String name);
 
-public interface PolicyAdministrationPoint {
-    User findUser(String name);
+    AccessRight getAccessRights(String user, String object);
 
-    List<AccessRight> getAccessRights(String subject, String resource);
+    AccessRight getProhibitions(String user, String object);
 
-    List<Node> getPolicyRelatedResources(PolicyClassEnum policyClass);
+    void addNode(String cypher);
 
-    List<AccessRight> getProhibitions(String subject, String resource);
+    void deleteNode(String cypher);
+
+    BaseNode findNode(NodeEnum nodeEnum, Long id, String name);
+
+    void addRelation(String cypher);
+
+    void deleteRelation(String cypher);
+
+    BaseRelation findRelation(RelationEnum relationEnum, Long id, String name);
+
+    BaseRelation findRelation(CommonNode source, CommonNode target);
+
+    BaseRelation findRelation(CommonNode source, CommonNode target, RelationEnum relationEnum);
+
+    AccessRight getAccessRights(String user, String object, NodeEnum nodeEnum);
 }

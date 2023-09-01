@@ -1,8 +1,11 @@
 package com.phor.ngac.service.impl;
 
-import com.phor.ngac.core.pap.PolicyAdministrationPoint;
+import com.google.common.collect.Lists;
+import com.phor.ngac.consts.CommonAccess;
+import com.phor.ngac.consts.NodeEnum;
 import com.phor.ngac.core.pep.PolicyEnforcementPoint;
-import com.phor.ngac.neo4j.entity.node.u.User;
+import com.phor.ngac.entity.vo.requests.AlterPermissionRequestVo;
+import com.phor.ngac.entity.vo.requests.UserMenuAuthRequestVo;
 import com.phor.ngac.service.AuthenticateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,16 +19,15 @@ public class AuthenticateServiceImpl implements AuthenticateService {
     @Resource
     private PolicyEnforcementPoint pep;
 
-    @Resource
-    private PolicyAdministrationPoint neo4jPap;
-
     @Override
-    public boolean visitMenu(String userName, String resource, String action) {
-        return pep.enforcePolicy(userName, resource, action);
+    public boolean visitMenu(UserMenuAuthRequestVo userMenuAuthRequestVo) {
+        return pep.enforcePolicy(userMenuAuthRequestVo.getName(), userMenuAuthRequestVo.getMenu(), CommonAccess.READ.getType());
     }
 
     @Override
-    public User findUser(String name) {
-        return neo4jPap.findUser(name);
+    public boolean alterPermission(AlterPermissionRequestVo alterPermissionRequestVo) {
+        return pep.enforcePolicy(alterPermissionRequestVo.getLoginUserName(),
+                NodeEnum.getByLabel(Lists.newArrayList(alterPermissionRequestVo.getPermissionName())),
+                CommonAccess.getMetaAccess(alterPermissionRequestVo.getPermissionType()).getType());
     }
 }

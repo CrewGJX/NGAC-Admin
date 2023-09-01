@@ -10,10 +10,8 @@ package com.phor.ngac.consts;
 public enum Decision {
     // 允许
     ALLOW,
-
     // 拒绝
     DENY,
-
     // 人工干预
     NEED_TO_DETERMINE;
 }
