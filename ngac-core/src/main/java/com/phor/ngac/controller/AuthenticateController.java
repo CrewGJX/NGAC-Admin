@@ -1,14 +1,17 @@
 package com.phor.ngac.controller;
 
 import com.phor.ngac.core.pip.Neo4jPip;
-import com.phor.ngac.entity.requests.UserRequestVo;
-import com.phor.ngac.entity.responses.CommonResponse;
-import com.phor.ngac.neo4j.entity.node.u.User;
+import com.phor.ngac.entity.vo.requests.AlterPermissionRequestVo;
+import com.phor.ngac.entity.vo.requests.UserMenuAuthRequestVo;
+import com.phor.ngac.entity.vo.responses.CommonResponse;
 import com.phor.ngac.service.AuthenticateService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -24,15 +27,15 @@ public class AuthenticateController {
 
     @PostMapping("visitMenu")
     @ApiOperation(value = "访问菜单", notes = "访问菜单鉴权")
-    public CommonResponse<Boolean> visitResource(@RequestBody @Validated UserRequestVo requestVo) {
-        boolean isAuthorized = authenticateService.visitMenu(requestVo.getName(), requestVo.getResource(), requestVo.getAction());
-        return CommonResponse.success(isAuthorized);
+    public CommonResponse<String> visitMenu(@RequestBody @Validated UserMenuAuthRequestVo requestVo) {
+        boolean isAuthorized = authenticateService.visitMenu(requestVo);
+        return CommonResponse.success(isAuthorized ? "authorized" : "unauthorized");
     }
 
-    @GetMapping("findUser/{user}")
-    @ApiOperation(value = "查询用户", notes = "根据用户名查询用户")
-    public CommonResponse<User> findUser(@PathVariable("user") String name) {
-        User user = authenticateService.findUser(name);
-        return CommonResponse.success(user);
+    @PostMapping("alterPermission")
+    @ApiOperation(value = "修改权限", notes = "修改权限")
+    public CommonResponse<String> alterPermission(@RequestBody @Validated AlterPermissionRequestVo requestVo) {
+        boolean isAuthorized = authenticateService.alterPermission(requestVo);
+        return CommonResponse.success(isAuthorized ? "authorized" : "unauthorized");
     }
 }

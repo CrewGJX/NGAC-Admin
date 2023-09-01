@@ -1,17 +1,17 @@
 package com.phor.ngac.core.pip;
 
-import com.phor.ngac.consts.AccessRight;
-import com.phor.ngac.consts.PolicyClassEnum;
-import com.phor.ngac.neo4j.entity.node.u.User;
+import com.phor.ngac.entity.dto.AccessRight;
+import com.phor.ngac.entity.po.node.u.User;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class MysqlPip implements PolicyInformationPoint {
     @Override
-    public User findUser(String name) {
-        return null;
+    public Optional<User> findUserAndRelations(String name) {
+        return Optional.empty();
     }
 
     @Override
@@ -20,7 +20,7 @@ public class MysqlPip implements PolicyInformationPoint {
     }
 
     @Override
-    public void getPolicyRelatedResources(PolicyClassEnum policyClass) {
-
+    public List<AccessRight> getProhibitions(String subject, String resource) {
+        return null;
     }
 }

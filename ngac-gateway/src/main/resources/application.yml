@@ -1,3 +1,5 @@
+server:
+  port: 8081
 spring:
   application:
     name: ngac-gateway
@@ -13,6 +15,3 @@ spring:
             - Path=/ngac/**
           filters:
             - StripPrefix=1
-
-server:
-  port: 8081

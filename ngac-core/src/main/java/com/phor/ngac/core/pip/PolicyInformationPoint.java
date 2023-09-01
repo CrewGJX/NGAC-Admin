@@ -1,33 +1,30 @@
 package com.phor.ngac.core.pip;
 
-import com.phor.ngac.consts.AccessRight;
-import com.phor.ngac.consts.PolicyClassEnum;
-import com.phor.ngac.neo4j.entity.node.u.User;
+import com.phor.ngac.entity.dto.AccessRight;
+import com.phor.ngac.entity.po.node.u.User;
+import com.phor.ngac.exception.PolicyClassException;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PolicyInformationPoint {
-    /**
-     * 根据用户名查找用户
-     *
-     * @param name 用户名
-     * @return 用户
-     */
-    User findUser(String name);
+    Optional<User> findUserAndRelations(String name);
 
     /**
      * 获取用户主体对资源客体的权限集合
      *
-     * @param subject  用户
-     * @param resource 资源
+     * @param user  用户
+     * @param object 资源
      * @return 权限集合
      */
-    List<AccessRight> getAccessRights(String subject, String resource);
+    List<AccessRight> getAccessRights(String user, String object) throws PolicyClassException;
 
     /**
-     * 获取pc关联的所有资源
+     * 获取用户主体对资源客体的禁止集合
      *
-     * @param policyClass 策略类型
+     * @param user  用户
+     * @param object 资源
+     * @return 禁止集合
      */
-    void getPolicyRelatedResources(PolicyClassEnum policyClass);
+    List<AccessRight> getProhibitions(String user, String object);
 }

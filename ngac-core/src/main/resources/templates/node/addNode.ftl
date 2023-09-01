@@ -1,0 +1,1 @@
+merge (n:${labels?join(":", "")} ${properties})

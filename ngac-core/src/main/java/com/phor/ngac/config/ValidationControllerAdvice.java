@@ -1,6 +1,6 @@
 package com.phor.ngac.config;
 
-import com.phor.ngac.entity.responses.CommonResponse;
+import com.phor.ngac.entity.vo.responses.CommonResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
@@ -30,6 +30,6 @@ public class ValidationControllerAdvice {
     @ExceptionHandler(value = Exception.class)
     public CommonResponse<String> handleException(Exception e) {
         log.error("controllerAdvice捕获Exception", e);
-        return CommonResponse.error(e.getClass().getName());
+        return CommonResponse.error(String.format("%s: %s", e.getClass().getSimpleName(), e.getMessage()));
     }
 }

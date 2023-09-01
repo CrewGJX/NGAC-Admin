@@ -6,9 +6,12 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
   neo4j:
-    uri: neo4j://localhost:7687
+    uri: bolt://127.0.0.1:7687
     authentication:
       username: neo4j
       password: fJxx2m#@DbWwMW
+ngac:
+  eventbus:
+    async: true
 server:
   port: 8080
