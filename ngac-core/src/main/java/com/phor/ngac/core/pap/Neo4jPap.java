@@ -168,7 +168,7 @@ public class Neo4jPap implements PolicyAdministrationPoint {
         String cypher = FreemarkerUtils.getContentByTemplatePath(FtlEnum.FIND_RELATION.getFullFtlPath(),
                 paramsSupplier.get());
 
-        log.info("findRelationInternal cypher: {}", cypher);
+        log.debug("findRelationInternal cypher: {}", cypher);
 
         Result result = simpleRunCypher(cypher);
 

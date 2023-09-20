@@ -1,8 +1,9 @@
 match (n)
-where "${label}" in labels(n)
-and
+where
 <#if id??>
     id(n)=${id}
 <#else >
-    n.name="${name}"</#if>
+    "${label}" in labels(n)
+    and n.name="${name}"
+</#if>
 return n

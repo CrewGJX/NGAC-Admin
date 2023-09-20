@@ -1,10 +1,9 @@
 package com.phor.ngac.service;
 
 import com.phor.ngac.entity.dto.UserPermission;
-import com.phor.ngac.entity.po.node.CommonNode;
-import com.phor.ngac.entity.po.relation.CommonRelation;
 import com.phor.ngac.entity.vo.requests.admin.node.RoleAdminOpt;
 import com.phor.ngac.entity.vo.requests.admin.node.UserAdminOpt;
+import com.phor.ngac.entity.vo.requests.admin.relation.AccessRelationAdminOpt;
 
 public interface AdministrativeOptService {
     UserPermission findUserAndPermissions(String name);
@@ -25,5 +24,5 @@ public interface AdministrativeOptService {
      */
     boolean addRole(String loginUserName, RoleAdminOpt userAdminOptRequestVo);
 
-    String addPermission(String loginUserName, CommonNode source, CommonNode target, CommonRelation relation);
+    boolean addPermission(String loginUserName, AccessRelationAdminOpt accessRelationAdminOpt);
 }

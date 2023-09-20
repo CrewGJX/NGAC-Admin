@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum RelationEnum {
+    UNKNOWN("unknown"),
     // 用于描述OA和UA之间的权限集合
     ACCESS("access"),
     // 用于描述U和O之间的禁止集合
@@ -20,4 +21,12 @@ public enum RelationEnum {
 
     private final String type;
 
+    public static RelationEnum getByType(String type) {
+        for (RelationEnum relationEnum : RelationEnum.values()) {
+            if (relationEnum.getType().equals(type)) {
+                return relationEnum;
+            }
+        }
+        return UNKNOWN;
+    }
 }

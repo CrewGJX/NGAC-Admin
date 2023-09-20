@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class DelRelationEvent extends BaseEvent {
+public class DeleteRelationEvent extends BaseEvent {
     private CommonNode source;
     private CommonNode target;
     private CommonRelation relation;

@@ -31,11 +31,13 @@ public enum NodeEnum {
     // 资源组
     RESOURCE_GROUP(Collections.singletonList("resourceGroup"), ResourceGroup.class),
     // alter用户节点的权限
-    USER_NODE(Lists.newArrayList("resource", "o"), null, "userNode"),
+    AUTH_USER_NODE(Lists.newArrayList("resource", "o"), null, "userNode"),
     // alter角色节点的权限
-    ROLE_NODE(Lists.newArrayList("resource", "o"), null, "roleNode"),
+    AUTH_ROLE_NODE(Lists.newArrayList("resource", "o"), null, "roleNode"),
     // alter pc 节点的权限
-    PC_NODE(Lists.newArrayList("pcNode", "o"), null, "pcNode"),
+    AUTH_PC_NODE(Lists.newArrayList("resource", "o"), null, "pcNode"),
+    // alter access 关系的权限
+    AUTH_ACCESS_RELATION(Lists.newArrayList("resource", "o"), null, "accessRelation"),
     ;
 
     private final List<String> label;

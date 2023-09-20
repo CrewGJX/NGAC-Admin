@@ -27,7 +27,7 @@
     <logger name="org.neo4j" level="INFO"/>
     <logger name="com.alibaba" level="INFO"/>
 
-    <root level="debug">
+    <root level="info">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </root>

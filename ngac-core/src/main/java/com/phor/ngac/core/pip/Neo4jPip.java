@@ -60,6 +60,7 @@ public class Neo4jPip extends CypherRunner implements PolicyInformationPoint {
 
         // 读取cypher中的cql
         String cypher = readFileFromResource("findUserAccess.cyp");
+        log.debug("cypher: {}", cypher);
 
         // 执行cql
         Collection<AccessRight> allAr = neo4jClient.query(cypher)

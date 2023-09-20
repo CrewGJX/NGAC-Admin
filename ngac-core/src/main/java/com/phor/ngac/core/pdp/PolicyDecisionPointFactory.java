@@ -22,10 +22,13 @@ public class PolicyDecisionPointFactory {
         BasePdp policyDecisionPoint;
         switch (pc) {
             case MENU_ROLE:
-                policyDecisionPoint = new RolePolicyDecisionPoint();
+                policyDecisionPoint = new MenuRolePdpConfig();
                 break;
             case ALTER_PERMISSION:
                 policyDecisionPoint = new AlterPermissionPdpConfig();
+                break;
+            case DATABASE_COLUMN:
+                policyDecisionPoint = new DatabaseColumnPdpConfig();
                 break;
             default:
                 policyDecisionPoint = new BasePdp.AllDenyPdp();

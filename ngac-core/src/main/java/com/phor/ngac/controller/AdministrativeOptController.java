@@ -29,7 +29,7 @@ public class AdministrativeOptController {
     @ApiOperation(value = "添加用户", notes = "添加用户")
     @ApiImplicitParam(name = "loginUserName", value = "登录用户名", required = true, dataType = "String", paramType = "query")
     public CommonResponse<Boolean> addUser(@RequestParam String loginUserName,
-                                          @RequestBody UserAdminOpt userAdminOptRequestVo) {
+                                           @RequestBody UserAdminOpt userAdminOptRequestVo) {
         boolean isSuccess = adminService.addUser(loginUserName, userAdminOptRequestVo);
         return CommonResponse.response(isSuccess);
     }
@@ -37,7 +37,7 @@ public class AdministrativeOptController {
     @PostMapping("addRole")
     @ApiOperation(value = "添加角色", notes = "添加角色")
     public CommonResponse<Boolean> addRole(@RequestParam String loginUserName,
-                          @RequestBody RoleAdminOpt roleAdminOptRequestVo) {
+                                           @RequestBody RoleAdminOpt roleAdminOptRequestVo) {
         boolean isSuccess = adminService.addRole(loginUserName, roleAdminOptRequestVo);
         return CommonResponse.response(isSuccess);
     }
@@ -50,8 +50,9 @@ public class AdministrativeOptController {
 
     @PostMapping("addPermission")
     @ApiOperation(value = "增加权限", notes = "增加权限")
-    public String addAccess(@RequestBody AccessRelationAdminOpt accessRelationAdminOpt) {
-        return adminService.addPermission(null, null, null, null);
+    public CommonResponse<Boolean> addAccess(@RequestParam String loginUserName, @RequestBody AccessRelationAdminOpt accessRelationAdminOpt) {
+        boolean isSuccess = adminService.addPermission(loginUserName, accessRelationAdminOpt);
+        return CommonResponse.response(isSuccess);
     }
 
     @GetMapping("findUserAndPermissions/{user}")
