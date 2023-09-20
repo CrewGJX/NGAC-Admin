@@ -5,6 +5,8 @@ import cn.hutool.core.util.ReflectUtil;
 import com.phor.ngac.consts.NodeEnum;
 import com.phor.ngac.core.epp.events.BaseEvent;
 import com.phor.ngac.core.epp.events.UnknownEvent;
+import com.phor.ngac.entity.po.node.CommonNode;
+import com.phor.ngac.entity.po.relation.CommonRelation;
 import com.phor.ngac.exception.EventFactoryException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -60,6 +62,10 @@ public class EventFactory {
 
         public NodeBuilder<T> node() {
             return new NodeBuilder<>(this.eventClass);
+        }
+
+        public RelationBuilder<T> relation() {
+            return new RelationBuilder<>(this.eventClass);
         }
 
         public T build() {
@@ -159,9 +165,8 @@ public class EventFactory {
         public T build() {
             T build = super.build();
             // 找到泛型T所有的属性和对应的set方法
-            Arrays.asList(ReflectUtil.getFields(build.getClass()))
-                    .stream()
-                    .peek(field -> field.setAccessible(true))
+            Arrays.stream(ReflectUtil.getFields(build.getClass()))
+                    .peek(ReflectUtil::setAccessible)
                     .filter(field -> !field.getName().equals("log") && !field.getName().equals("type"))
                     .forEach(field -> {
                         log.info("field: {}", field);
@@ -182,9 +187,51 @@ public class EventFactory {
     }
 
     public static class RelationBuilder<T extends BaseEvent> extends Builder<T> {
+        private CommonNode source;
+        private CommonNode target;
+        private CommonRelation relation;
+
         RelationBuilder(Class<T> eventClass) {
             super(eventClass);
         }
-    }
 
+        public RelationBuilder<T> sourceNode(CommonNode source) {
+            this.source = source;
+            return this;
+        }
+
+        public RelationBuilder<T> targetNode(CommonNode target) {
+            this.target = target;
+            return this;
+        }
+
+        public RelationBuilder<T> relationData(CommonRelation relation) {
+            this.relation = relation;
+            return this;
+        }
+
+        @Override
+        public T build() {
+            T build = super.build();
+            // 找到泛型T所有的属性和对应的set方法
+            Arrays.stream(ReflectUtil.getFields(build.getClass()))
+                    .peek(ReflectUtil::setAccessible)
+                    .filter(field -> !field.getName().equals("log") && !field.getName().equals("type"))
+                    .forEach(field -> {
+                        log.info("field: {}", field);
+                        String fieldName = field.getName();
+                        String setMethodName = "set" + StringUtils.capitalize(fieldName);
+                        log.info("setMethodName: {}", setMethodName);
+                        Method setMethod = ReflectUtil.getMethodByName(build.getClass(), setMethodName);
+                        Object fieldValue = ReflectUtil.getFieldValue(this, fieldName);
+                        try {
+                            setMethod.invoke(build, fieldValue);
+                        } catch (IllegalAccessException | InvocationTargetException e) {
+                            throw new EventFactoryException("设置baseEvent变量失败", e);
+                        }
+                    });
+            log.info("build: {}", build);
+            return build;
+        }
+    }
 }

@@ -8,14 +8,14 @@ import com.phor.ngac.entity.po.node.pc.PolicyClass;
 import com.phor.ngac.entity.po.node.u.User;
 import com.phor.ngac.entity.po.node.ua.Role;
 import com.phor.ngac.entity.po.node.ua.UserGroup;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
-@AllArgsConstructor
 public enum NodeEnum {
     UNKNOWN(Collections.singletonList("unknown"), BaseNode.class),
     // 策略类
@@ -31,21 +31,45 @@ public enum NodeEnum {
     // 资源组
     RESOURCE_GROUP(Collections.singletonList("resourceGroup"), ResourceGroup.class),
     // alter用户节点的权限
-    USER_NODE(Lists.newArrayList("resource", "o"), null),
+    AUTH_USER_NODE(Lists.newArrayList("resource", "o"), null, "userNode"),
     // alter角色节点的权限
-    ROLE_NODE(Lists.newArrayList("resource", "o"), null),
+    AUTH_ROLE_NODE(Lists.newArrayList("resource", "o"), null, "roleNode"),
     // alter pc 节点的权限
-    PC_NODE(Lists.newArrayList("pcNode", "o"), null),
+    AUTH_PC_NODE(Lists.newArrayList("resource", "o"), null, "pcNode"),
+    // alter access 关系的权限
+    AUTH_ACCESS_RELATION(Lists.newArrayList("resource", "o"), null, "accessRelation"),
     ;
 
     private final List<String> label;
 
     private final Class<? extends BaseNode> nodeClass;
 
+    private String name = null;
+
+    NodeEnum(List<String> label, Class<? extends BaseNode> nodeClass) {
+        this.label = label;
+        this.nodeClass = nodeClass;
+    }
+
+    NodeEnum(List<String> label, Class<? extends BaseNode> nodeClass, String name) {
+        this.label = label;
+        this.nodeClass = nodeClass;
+        this.name = name;
+    }
+
     @SuppressWarnings("all")
     public static NodeEnum getByLabel(List<String> label) {
         for (NodeEnum nodeEnum : NodeEnum.values()) {
             if (nodeEnum.getLabel().containsAll(label)) {
+                return nodeEnum;
+            }
+        }
+        return UNKNOWN;
+    }
+
+    public static NodeEnum getByName(String name) {
+        for (NodeEnum nodeEnum : NodeEnum.values()) {
+            if (Optional.ofNullable(nodeEnum.getName()).orElse(StringUtils.EMPTY).equals(name)) {
                 return nodeEnum;
             }
         }

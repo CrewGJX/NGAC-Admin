@@ -30,11 +30,20 @@ import java.util.stream.Collectors;
 @Component
 public class BaseEventSubscriber {
 
-    private static ConcurrentHashMap<Class, List<Method>> handlerRouteMap;
+    private static ConcurrentHashMap<Class<?>, List<Method>> handlerRouteMap;
     @Resource
     private PolicyAdministrationPoint neo4jPap;
 
+    /**
+     * 初始化handlerRouteMap
+     *
+     * @see AddNodeEvent
+     * @see DeleteNodeEvent
+     * @see AddRelationEvent
+     * @see DeleteRelationEvent
+     */
     @PostConstruct
+    @SuppressWarnings("java:S2696")
     public void init() {
         log.info("BaseEventSubscriber init");
         Method[] methods = this.getClass().getDeclaredMethods();
@@ -102,21 +111,21 @@ public class BaseEventSubscriber {
     public void handleAddRelation(AddRelationEvent event) {
         CommonNode source = event.getSource();
         CommonNode target = event.getTarget();
-        String relationLabel = event.getRelationLabel();
-        Map<String, Object> propertyMap = event.getPropertyMap();
+        CommonRelation relation = event.getRelation();
+        Map<String, Object> propertyMap = relation.getPropertyMap();
 
         String cypher = FreemarkerUtils.getContentByTemplatePath(FtlEnum.ADD_RELATION.getFullFtlPath(),
                 MapUtil.ofEntries(
                         MapUtil.entry("source", source),
                         MapUtil.entry("target", target),
-                        MapUtil.entry("relationLabel", relationLabel),
+                        MapUtil.entry("relationLabel", relation.getType()),
                         MapUtil.entry("propertyMap", JSON.toJSONString(propertyMap, JSONWriter.Feature.UnquoteFieldName))
                 ));
         log.info("add rel cypher: {}", cypher);
         neo4jPap.addRelation(cypher);
     }
 
-    public void handleDelRelation(DelRelationEvent event) {
+    public void handleDelRelation(DeleteRelationEvent event) {
         CommonNode source = event.getSource();
         CommonNode target = event.getTarget();
         CommonRelation relation = event.getRelation();

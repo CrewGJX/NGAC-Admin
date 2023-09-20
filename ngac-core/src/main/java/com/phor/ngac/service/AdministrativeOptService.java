@@ -1,8 +1,9 @@
 package com.phor.ngac.service;
 
 import com.phor.ngac.entity.dto.UserPermission;
-import com.phor.ngac.entity.vo.requests.admin.RoleAdminOpt;
-import com.phor.ngac.entity.vo.requests.admin.UserAdminOpt;
+import com.phor.ngac.entity.vo.requests.admin.node.RoleAdminOpt;
+import com.phor.ngac.entity.vo.requests.admin.node.UserAdminOpt;
+import com.phor.ngac.entity.vo.requests.admin.relation.AccessRelationAdminOpt;
 
 public interface AdministrativeOptService {
     UserPermission findUserAndPermissions(String name);
@@ -13,7 +14,7 @@ public interface AdministrativeOptService {
      * @param loginUserName         登录用户名
      * @param userAdminOptRequestVo 用户信息
      */
-    void addUser(String loginUserName, UserAdminOpt userAdminOptRequestVo);
+    boolean addUser(String loginUserName, UserAdminOpt userAdminOptRequestVo);
 
     /**
      * 添加角色
@@ -21,5 +22,7 @@ public interface AdministrativeOptService {
      * @param loginUserName         登录用户名
      * @param userAdminOptRequestVo 角色信息
      */
-    void addRole(String loginUserName, RoleAdminOpt userAdminOptRequestVo);
+    boolean addRole(String loginUserName, RoleAdminOpt userAdminOptRequestVo);
+
+    boolean addPermission(String loginUserName, AccessRelationAdminOpt accessRelationAdminOpt);
 }

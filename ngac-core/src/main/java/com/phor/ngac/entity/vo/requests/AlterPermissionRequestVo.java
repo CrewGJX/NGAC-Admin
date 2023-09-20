@@ -1,12 +1,16 @@
 package com.phor.ngac.entity.vo.requests;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AlterPermissionRequestVo {
     @NotEmpty(message = "用户名不能为空")
     private String loginUserName;

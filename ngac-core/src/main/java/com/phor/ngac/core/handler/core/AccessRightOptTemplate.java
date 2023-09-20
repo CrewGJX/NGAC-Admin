@@ -38,7 +38,9 @@ public class AccessRightOptTemplate extends PathOptTemplate implements AccessRig
         List<CommonAccess> antAl = b.getCommonAccessList();
 
         List<CommonAccess> result = biFunction.apply(oneAl, antAl);
-        newAR.policy(joinPolicyName(a.getPolicy(), b.getPolicy()))
+        newAR.user(a.getUser())
+                .object(a.getObject())
+                .policy(joinPolicyName(a.getPolicy(), b.getPolicy()))
                 .commonAccessList(result);
         return newAR.build();
     }
